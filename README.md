@@ -17,7 +17,10 @@ A simple and functional task management application built with Laravel. Users ca
 
 - ✅ User registration & login
 - 🗂️ Add / Edit / Delete tasks
-- 📊 Task status updates (complete/incomplete)
+- 🔍 Search tasks by title or description
+- 🎯 Filter tasks by status (pending, completed)
+- ⏰ Display task creation time in a human-friendly format (e.g. "2 hours ago")
+- 📊 Task list enhanced with DataTables for pagination, sorting, and instant search
 - 🎨 Responsive UI with Bootstrap 5
 - 🔐 Route protection via Laravel middleware
 
@@ -30,6 +33,7 @@ A simple and functional task management application built with Laravel. Users ca
 - **MySQL**
 - **Bootstrap 5**
 - **Blade Templating**
+- **jQuery & DataTables**
 
 ---
 
@@ -43,4 +47,6 @@ cp .env.example .env
 php artisan key:generate
 # Edit your .env with DB credentials
 php artisan migrate
+npm install
+npm run dev
 php artisan serve
