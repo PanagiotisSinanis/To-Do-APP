@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 
 class AuthManager extends Controller
@@ -19,12 +21,12 @@ class AuthManager extends Controller
         return redirect()->route('login');
     }
 
-    function LoginPost(Request $request)
+    function LoginPost(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
+       // $request->validate([
+          //  'email' => 'required',
+           // 'password' => 'required',
+        //]);
 
         $credentials = $request->only('email','password');
         if(Auth::attempt($credentials)){
@@ -39,12 +41,12 @@ class AuthManager extends Controller
         return view('auth.register');
     }
 
-    function registerPost(Request $request){
-        $request->validate([
-            'fullname'=>'required',
-            'email'=>'required|email|unique:users',
-            'password'=>'required|min:6'
-        ]);
+    function registerPost(RegisterUserRequest  $request){
+        //$request->validate([
+          //  'fullname'=>'required',
+           // 'email'=>'required|email|unique:users',
+           // 'password'=>'required|min:6'
+        //]);
         $user = new User();
         $user->name=$request->fullname;
         $user->email=$request->email;

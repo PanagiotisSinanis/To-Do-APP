@@ -14,16 +14,19 @@ Route::post('/register', [AuthManager::class, 'registerPost'])->name('register.p
 
 Route::middleware('auth')->group(function () {
     
+     Route::resource('tasks', TaskManager::class);
+     Route::get('/', [TaskManager::class, 'index'])->name('home');
+
     // Home (task list)
-    Route::get('/', [TaskManager::class, 'listTask'])->name('home');
+   // Route::get('/', [TaskManager::class, 'listTask'])->name('home');
 
     // Add Task
-    Route::get('/task/add', [TaskManager::class, 'addTask'])->name('task.add');
-    Route::post('/task/add', [TaskManager::class, 'addTaskPost'])->name('task.add.post');
+   // Route::get('/task/add', [TaskManager::class, 'addTask'])->name('task.add');
+    //Route::post('/task/add', [TaskManager::class, 'addTaskPost'])->name('task.add.post');
 
     // Update task status (e.g., mark as completed)
-    Route::post('/task/status/{id}', [TaskManager::class, 'updateTaskStatus'])->name('task.status.update');
+   // Route::post('/task/status/{id}', [TaskManager::class, 'updateTaskStatus'])->name('task.status.update');
 
     // Delete task
-    Route::delete('/task/delete/{id}', [TaskManager::class, 'deleteTask'])->name('task.delete');
+  //  Route::delete('/task/delete/{id}', [TaskManager::class, 'deleteTask'])->name('task.delete');
 });

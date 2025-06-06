@@ -18,7 +18,7 @@
                                 <a class="nav-link " href="{{ route('logout') }}">Logout</a>
                             </li>
                         </ul>
-                            <a class="btn btn-outline-success" href="{{ route('task.add') }}">Add Task</a>
+                            <a class="btn btn-outline-success" href="{{ route('tasks.create') }}">Add Task</a>
                     </div>
                 </div>
             </nav>

@@ -4,7 +4,7 @@
 <div class="d-flex align-item-center">
     <div class="container card shodow-sm " style="margin-top: 200px ; max-width: 500px">
         <div class="fs-3 fw-bold text-center">Add new task </div>
-        <form method="POST" action="{{ route('task.add.post') }}" class="mb-3">
+        <form method="POST" action="{{ route('tasks.store') }}" class="mb-3">
     @csrf
     <div class="mb-3">
         <input type="text" name="title" class="form-control" >
