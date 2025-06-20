@@ -7,9 +7,11 @@ use App\Http\Controllers\TaskManager;
 
 // Login route
 Route::post('/login', [AuthManager::class, 'apiLogin']);
+Route::post('/register', [AuthManager::class, 'apiRegister']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthManager::class, 'apiLogout']);
+     Route::post('/tasks', [TaskManager::class, 'store']); // Create a new task
     Route::get('/tasks', [TaskManager::class, 'index']);
 });
 

@@ -86,6 +86,35 @@ public function apiLogout(Request $request)
 
     return response()->json(['message' => 'Logout successful']);
 }
+public function apiRegister(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6',
+    ]);
+
+    try {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Registration successful',
+            'token' => $token,
+            'user' => $user,
+        ], 201);
+
+    } catch (\Exception $e) {
+        Log::error('Register error: ' . $e->getMessage());
+        return response()->json(['message' => 'Registration failed'], 500);
+    }
+}
+
 
 
 }
