@@ -8,19 +8,11 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class AuthManager extends Controller
 {
-    function login()
-    {
-        return view('auth.login');
-    }
-
-    public function logout()
-    {
-        Auth::logout(); 
-        return redirect()->route('login');
-    }
+   
 
     function LoginPost(LoginRequest $request)
     {
@@ -58,24 +50,42 @@ class AuthManager extends Controller
         return redirect(route("register"))->with("error","Registration Failed");
     }
 
-    public function apiLogin(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+  public function apiLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    if (!Auth::attempt($request->only('email', 'password'))) {
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+
+        // Σβήνουμε παλιά tokens αν θες
+        $user->tokens()->delete();
+
+        // Δημιουργούμε νέο token
+        $token = $user->createToken('api-token')->plainTextToken;
+
         return response()->json([
-            'message' => 'Invalid credentials'
-        ], 401);
+            'message' => 'Login successful',
+            'token' => $token,
+            'user' => $user,
+        ]);
     }
 
-    $request->session()->regenerate();
+public function apiLogout(Request $request)
+{
+    $user = $request->user();
 
-    return response()->json([
-        'message' => 'Logged in successfully',
-        'user' => Auth::user()
-    ]);
+    if ($user) {
+        $user->currentAccessToken()->delete();
+    }
+
+    return response()->json(['message' => 'Logout successful']);
 }
+
+
 }

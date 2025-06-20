@@ -4,12 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthManager;
 use App\Http\Controllers\TaskManager;
 
-Route::post('/login', [AuthManager::class, 'apiLogin']);
-Route::post('/logout', [AuthManager::class, 'apiLogout']);
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/tasks', [TaskManager::class, 'index']);
-});
 //Route::get('/logout', [AuthManager::class, 'logout'])->name('logout');
 
 //Route::get('/login', [AuthManager::class, 'login'])->name('login');
@@ -22,10 +17,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-//Route::middleware('auth')->group(function () {
-   // Route::get('/tasks', [TaskManager::class, 'index']);
-   //Route::resource('tasks', TaskManager::class);
-   //Route::get('/', [TaskManager::class, 'index'])->name('home');
+Route::middleware('auth')->group(function () {
+    //Route::get('/tasks', [TaskManager::class, 'index']);
+   Route::resource('tasks', TaskManager::class);
+   Route::get('/', [TaskManager::class, 'index'])->name('home');
 
     // Home (task list)
    // Route::get('/', [TaskManager::class, 'listTask'])->name('home');
@@ -39,4 +34,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Delete task
   //  Route::delete('/task/delete/{id}', [TaskManager::class, 'deleteTask'])->name('task.delete');
-//});
+});
