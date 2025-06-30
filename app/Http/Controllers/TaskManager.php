@@ -63,15 +63,26 @@ public function index(Request $request)
     }
 
     // POST /tasks
-   public function store(StoreTaskRequest $request)
+  public function store(StoreTaskRequest $request)
 {
     try {
         $data = $request->validated();
         $data['status'] = 'pending';
 
+        $user = $request->user();
+
+        // Έλεγχος αν ο χρήστης ανήκει στο project
+        $belongs = $user->projects()->where('projects.id', $data['project_id'])->exists();
+
+        if (!$belongs) {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Unauthorized: You do not belong to this project'], 403);
+            }
+            return redirect()->back()->with('error', 'You are not authorized to add tasks to this project');
+        }
+
         $task = Tasks::create($data);
 
-        // Αν είναι API request
         if ($request->wantsJson()) {
             return response()->json([
                 'message' => 'Task created successfully',
@@ -79,7 +90,6 @@ public function index(Request $request)
             ], 201);
         }
 
-        // Αν είναι web (Blade)
         return redirect()->route('tasks.index')->with("success", "Task added successfully");
 
     } catch (\Exception $e) {
@@ -90,6 +100,7 @@ public function index(Request $request)
         return redirect()->route('tasks.create')->with("error", "Failed to add task");
     }
 }
+
 
 
     // DELETE /tasks/{id}

@@ -16,10 +16,16 @@ class Tasks extends Model
         'description',
         'deadline',
         'status',
+        'project_id',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'deadline' => 'datetime',
     ];
+    public function project()
+{
+    return $this->belongsTo(Project::class);
+}
+
 }

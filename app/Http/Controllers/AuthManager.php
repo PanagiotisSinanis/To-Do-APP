@@ -73,6 +73,7 @@ class AuthManager extends Controller
             'message' => 'Login successful',
             'token' => $token,
             'user' => $user,
+             'roles' => $user->getRoleNames(), 
         ]);
     }
 
