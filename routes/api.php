@@ -7,6 +7,7 @@ use App\Http\Controllers\TaskManager;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TimeEntryController;
 
 // Login route
 
@@ -42,3 +43,12 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/test', function () {
     return response()->json(['message' => 'API Routes working']);
 });
+
+
+Route::middleware('auth:sanctum')->post('/time/stop', [TimeEntryController::class, 'stop']);
+Route::middleware('auth:sanctum')->get('/project/{id}/time-total', [TimeEntryController::class, 'totalTimePerProject']);
+Route::middleware('auth:sanctum')->post('/time/quick-entry', [TimeEntryController::class, 'quickEntry']);
+Route::middleware('auth:sanctum')->post('/time/start', [TimeEntryController::class, 'start']);
+Route::middleware('auth:sanctum')->get('/projects/{id}/tasks', [TaskManager::class, 'getTasksByProject']);
+Route::middleware('auth:sanctum')->get('/time/active', [TimeEntryController::class, 'active']);
+

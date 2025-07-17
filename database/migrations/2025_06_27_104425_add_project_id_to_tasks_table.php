@@ -11,9 +11,12 @@ return new class extends Migration
      */
    public function up()
 {
-    Schema::table('tasks', function (Blueprint $table) {
-        $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
-    });
+     if (!Schema::hasColumn('tasks', 'project_id')) {
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->unsignedBigInteger('project_id')->nullable();
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+        });
+}
 }
 
 

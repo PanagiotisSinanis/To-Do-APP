@@ -38,5 +38,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function timeEntries()
+{
+    return $this->hasMany(\App\Models\TimeEntry::class);
+}
 
 }

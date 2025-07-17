@@ -137,4 +137,16 @@ public function index(Request $request)
     }
     return redirect()->route('tasks.index')->with("error", "Task not completed");
 }
+public function getTasksByProject($id)
+{
+    try {
+        $tasks = Tasks::where('project_id', $id)->get();
+        return response()->json(['tasks' => $tasks]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Failed to fetch tasks',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
 }
