@@ -1,52 +1,27 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Backend API Updates – Enhancements of Time Tracking
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This branch implements advanced changes to the time tracking functionality of the TimeEntryController, integrating smarter tracking logic and task integration. 
 
-# 📝 To-Do APP
+1. TimeEntryController
 
-A simple and functional task management application built with Laravel. Users can register, log in, and manage their personal to-do list by adding, editing, or deleting tasks. The app offers a clean UI using Bootstrap and secure authentication via Laravel middleware.
+Smart Start/Stop: Using the current_start_time field, time tracking is more precise, and time is properly accumulated. Upon stopping a timer, the elapsed time divides the total and is added to the cumulative total. If a timer is started on a previously worked on task, it resumes the previous entry instead of spawning a new entry.
 
----
+Task Integration: Time entries can be associated to tasks using task_id. Upon stopping a timer for a task, the task status is changed to ‘pending’ automatically. 
 
-## 🚀 Features
+New Methods: 
+To ensure safer time entry deletion, a new destroy method was added.
 
-- ✅ User registration & login
-- 🗂️ Add / Edit / Delete tasks
-- 🔍 Search tasks by title or description
-- 🎯 Filter tasks by status (pending, completed)
-- ⏰ Display task creation time in a human-friendly format (e.g. "2 hours ago")
-- 📊 Task list enhanced with DataTables for pagination, sorting, and instant search
-- 🎨 Responsive UI with Bootstrap 5
-- 🔐 Route protection via Laravel middleware
+The entries method now fetches data more efficiently using eager loading, and thus, the method is improved.
 
----
+Simplified API: the server now automatically calculates the start/end time for the timer, thus the client is freed from sending this data, making the stop method simpler.
 
-## ⚙️ Technologies
+2. New Database Migrations
 
-- **PHP 8.x**
-- **Laravel 10.x**
-- **MySQL**
-- **Bootstrap 5**
-- **Blade Templating**
-- **jQuery & DataTables**
+To support these features, the following new migrations are created:
 
----
+add_task_id_to_time_entries_table.php: relate TimeEntry records to Tasks with task_id.
 
-## 🔧 Installation Instructions
+add_current_start_time_to_time_entries_table.php: introduces new field to be able to track time accurately.
 
-```bash
-git clone https://github.com/PanagiotisSinanis/To-Do-APP.git
-cd To-Do-APP
-composer install
-cp .env.example .env
-php artisan key:generate
-# Edit your .env with DB credentials
-php artisan migrate
-npm install
-npm run dev
-php artisan serve
+project_and_times_to_tasks_table.php: A migration to add necessary columns for the project.
+
